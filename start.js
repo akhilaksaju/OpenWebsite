@@ -3,7 +3,6 @@ const puppeteer = require("puppeteer");
 const fs = require('fs');
 const readline = require('readline');
 
-openLink();
 
 let openLink = async()=>{
 const browser = await puppeteer.launch({
@@ -27,38 +26,45 @@ const rl = readline.createInterface({
 });
 
 for await (const line of rl) {
-    try{
-        let url = "https://"+ line;
-        console.log(`connecting  ${url}`);
+ 
+    for (let i = 0; i < 3; i++) {
+        try{
+            let url = "https://"+ line;
+            console.log(`connecting  ${url}`);
 
-        await page.goto(url, {
-            timeout: 60000,
-            waitUntil: "domcontentloaded"
-          });
-    
-        await sleep(2000)
-    }catch (e) {
-        console.log(e.message);
+            await page.goto(url, {
+                timeout: 60000,
+                waitUntil: "domcontentloaded"
+            });
+        
+            await sleep(2000)
+        }catch (e) {
+            console.log(e.message);
 
-        let url = "http://"+ line;
-        console.log(`connecting  ${url}`);
+            let url = "http://"+ line;
+            console.log(`connecting  ${url}`);
 
-        await page.goto(url, {
-            timeout: 60000,
-            waitUntil: "domcontentloaded"
-          });
-    
-        await sleep(2000)
-      }
-
+            await page.goto(url, {
+                timeout: 60000,
+                waitUntil: "domcontentloaded"
+            });
+        
+            await sleep(2000)
+        }
+    }
 }
 
 browser.close();
 
 
 }
+
+
+
 function sleep(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
 }
+
+openLink();
